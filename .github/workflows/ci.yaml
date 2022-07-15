@@ -1,0 +1,49 @@
+name: Continuous Integration Tests
+
+on: [push, workflow_dispatch]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Check Svelte
+        run: npm run check:svelte
+
+      - name: Check TypeScript
+        run: npm run check:typescript
+
+      - name: Check Lint
+        run: npm run check:lint
+
+      - name: Check Formatting
+        run: npm run check:format
+
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
